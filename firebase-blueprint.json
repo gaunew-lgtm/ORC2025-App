@@ -1,0 +1,39 @@
+{
+  "entities": {
+    "leaderboard": {
+      "title": "Leaderboard Entry",
+      "description": "Represents a saved match result of a team including jobs assigned and final score.",
+      "type": "object",
+      "properties": {
+        "team": {
+          "type": "string",
+          "description": "The name of the team"
+        },
+        "score": {
+          "type": "integer",
+          "description": "The score of the team"
+        },
+        "jobs": {
+          "type": "array",
+          "description": "Team member job assignments"
+        },
+        "stats": {
+          "type": "object",
+          "description": "Sub-calculator score metrics including points and penalties"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The timestamp of when the score was saved"
+        }
+      },
+      "required": ["team", "score", "jobs", "stats", "createdAt"]
+    }
+  },
+  "firestore": {
+    "leaderboard/{entryId}": {
+      "schema": "leaderboard",
+      "description": "Collection of leaderboard entries"
+    }
+  }
+}

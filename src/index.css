@@ -1,0 +1,54 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
+@import "tailwindcss";
+
+@layer base {
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: #bfdbfe;
+    min-height: 100-screen;
+  }
+}
+
+/* Hide spin-button for input[type=number] */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+.medium-blue-shadow {
+  box-shadow: 0 25px 50px -12px rgba(59, 130, 246, 0.45);
+}
+
+.alert-pulse {
+  animation: alertPulse 0.5s infinite;
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes alertPulse {
+  0%, 100% {
+    transform: scale(1);
+    color: #ef4444;
+  }
+  50% {
+    transform: scale(1.05);
+    color: #f87171;
+  }
+}

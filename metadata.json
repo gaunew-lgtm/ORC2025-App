@@ -1,0 +1,8 @@
+{
+  "name": "ORC 2025 Scoreboard",
+  "description": "A scoreboard, timer, calculator, and persistent leaderboard for the ORC 2025 competition.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

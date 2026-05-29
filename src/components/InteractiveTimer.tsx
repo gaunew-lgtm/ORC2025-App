@@ -3,10 +3,29 @@ import { useState, useEffect, useRef } from "react";
 export default function InteractiveTimer() {
   const [timeLeft, setTimeLeft] = useState<number>(120);
   const [isRunning, setIsRunning] = useState<boolean>(false);
+  const [notification, setNotification] = useState<string | null>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Use a ref to track alerts that have already fired in this timer cycle to prevent infinite / redundant popups.
   const alertedTimesRef = useRef<Set<number>>(new Set());
+
+  // Show a non-blocking toast notification that vanishes after 5 seconds
+  const showNotification = (msg: string) => {
+    setNotification(msg);
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+    timeoutRef.current = setTimeout(() => {
+      setNotification(null);
+    }, 5000);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, []);
 
   useEffect(() => {
     if (isRunning) {
@@ -40,25 +59,25 @@ export default function InteractiveTimer() {
     // "Tự động còn 10 giây" at elapsed === 20
     if (elapsed === 20 && !alertedTimesRef.current.has(20)) {
       alertedTimesRef.current.add(20);
-      alert("Tự động còn 10 giây");
+      showNotification("Tự động còn 10 giây");
     }
 
     // "Còn 60 giây" at timeLeft === 60
     if (timeLeft === 60 && !alertedTimesRef.current.has(60)) {
       alertedTimesRef.current.add(60);
-      alert("Còn 60 giây");
+      showNotification("Còn 60 giây");
     }
 
     // "Còn 30 giây" at timeLeft === 30
     if (timeLeft === 30 && !alertedTimesRef.current.has(30)) {
       alertedTimesRef.current.add(30);
-      alert("Còn 30 giây");
+      showNotification("Còn 30 giây");
     }
 
     // "10 giây cuối" at timeLeft === 10
     if (timeLeft === 10 && !alertedTimesRef.current.has(10)) {
       alertedTimesRef.current.add(10);
-      alert("10 giây cuối");
+      showNotification("10 giây cuối!");
     }
   }, [timeLeft, elapsed, isRunning]);
 
@@ -69,6 +88,7 @@ export default function InteractiveTimer() {
   const resetTimer = () => {
     setIsRunning(false);
     setTimeLeft(120);
+    setNotification(null);
     alertedTimesRef.current.clear();
   };
 
@@ -113,6 +133,11 @@ export default function InteractiveTimer() {
           >
             {timeStr}
           </div>
+          {notification && (
+            <div className="mt-2.5 text-[10px] font-black uppercase tracking-wider text-amber-600 bg-amber-50/75 px-3 py-1.5 rounded-xl border border-amber-100/80 inline-block animate-pulse">
+              ⚠️ {notification}
+            </div>
+          )}
         </div>
         <div className="flex flex-col gap-2 w-full sm:w-auto sm:flex-grow">
           <button
